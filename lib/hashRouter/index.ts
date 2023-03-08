@@ -1,5 +1,6 @@
 export default class HashRouter {
-  private routers = new Map();
+  private routers = new Map<string, Function>();
+  private home: string = "/";
   constructor() {
     window.addEventListener(
       "hashchange",
@@ -19,9 +20,19 @@ export default class HashRouter {
   private handleCallback() {
     const hash = location.hash.slice(1);
     let handle;
-    if (!hash) {
-        
+    if (!!hash) {
+      handle = this.routers.get(hash);
+    } else {
+      handle = this.routers.get(this.home) || this.NotFound;
+    }
+    try {
+      handle?.call(this);
+    } catch (error) {
+      console.log(error);
+      (this.routers.get("error") || function () {}).call(this);
     }
   }
-  private NotFound() {}
+  private NotFound() {
+    return "404 Not Found";
+  }
 }
