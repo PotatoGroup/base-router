@@ -18,4 +18,4 @@
       false
     );
 ```
-注意：浏览器前进、后退、刷新、超链接点击不会出发popstate事件
+注意：调用 history.pushState() 或者 history.replaceState() 不会触发 popstate 事件。只有浏览器的前进、后退会触发popstate事件（history.go, history.back, history.forward）
